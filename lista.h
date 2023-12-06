@@ -69,22 +69,33 @@ void exibirLista(LISTA* l) {
     printf("\n"); 
 }
 
-bool exclui(LISTA* l, int pos) {
-    if (pos<0 || pos>tamanho(l)-1) return false;
-    int i;
-    ELEMENTO* p;
-    ELEMENTO* apagar;
-    if (pos == 0) {
-        apagar = l->inicio;
-        l->inicio = apagar->prox;
-    } else {
-        p = l->inicio;
-        for (i=0; i<pos-1; i++) p = p->prox;
-        apagar = p->prox;
-        p->prox = apagar->prox; 
+//remove um elemento especificado por DATA da lista 
+void removerElemento(LISTA *lista, DATA data) {
+  PONT atual = lista->inicio;
+  PONT anterior = NULL;
+
+  while (atual != NULL) {
+    if (atual->reg.DATA.dia == data.dia &&
+        atual->reg.DATA.mes == data.mes &&
+        atual->reg.DATA.ano == data.ano) {
+
+      if (anterior == NULL) {
+        lista->inicio =
+            atual->prox; // O elemento a ser removido é o primeiro da lista
+      } else {
+        anterior->prox = atual->prox; // Elemento a ser removido está no meio ou
+                                      // no final da lista
+      }
+
+      free(atual); // Libera memória do nó removido
+      return;
     }
-    free(apagar);
-    return true; 
+
+    anterior = atual;
+    atual = atual->prox;
+  }
+
+  printf("\nElemento não encontrado na lista.\n");
 }
 
 void reinicializarLista(LISTA* l) {
