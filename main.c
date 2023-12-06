@@ -1,4 +1,4 @@
-#include "listavitor.h"
+#include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +7,44 @@
 #define TAMANHO_MAX_SENHA 50
 #define MAX_TAMANHO 200
 
+
+
 const char *nome_diretorio = "ArquivosUsuario";
+
+int validarData(DATAFORNECIDA *data) {
+    if (data->ano < 1000 || data->ano > 3000) {
+        printf("Ano deve estar entre 1000 e 3000.\n");
+        return 0;
+    }
+    if (data->mes < 1 || data->mes > 12) {
+        printf("Mês deve estar entre 1 e 12.\n");
+        return 0;
+    }
+    if (data->dia < 1 || data->dia > 31) {
+        printf("Dia deve estar entre 1 e 31.\n");
+        return 0;
+    }
+
+    // Validação de dias por mês
+    if ((data->mes == 4 || data->mes == 6 || data->mes == 9 || data->mes == 11) && data->dia > 30) {
+        printf("Neste mês, o máximo de dias é 30.\n");
+        return 0;
+    }
+    if (data->mes == 2) {
+        if ((data->ano % 4 == 0 && data->ano % 100 != 0) || data->ano % 400 == 0) {
+            if (data->dia > 29) {
+                printf("Fevereiro em ano bissexto tem no máximo 29 dias.\n");
+                return 0;
+            }
+        } else {
+            if (data->dia > 28) {
+                printf("Fevereiro em ano não bissexto tem no máximo 28 dias.\n");
+                return 0;
+            }
+        }
+    }
+    return 1; // A data é válida
+}
 
 // Estrutura de dados auxiliar
 typedef struct {
@@ -277,14 +314,8 @@ void atualizarSenha() {
 
 int main() {
     int choice;
-    char *senha = (char *)malloc(50 * sizeof(char));
-
-    printf("Digite sua senha: ");
-    scanf("%s", senha);
-
-    salvarSenha(senha);
-
-    LISTA* lista;
+ 
+    LISTA* lista = (LISTA*)malloc(sizeof(LISTA));
     inicializarLista(lista);
     popularListaDeArquivo(lista);
 
