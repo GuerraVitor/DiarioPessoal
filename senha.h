@@ -5,13 +5,13 @@
 #define TAMANHO_MAX_SENHA 50
 
 void salvarSenha(char *senha) {
-  FILE *arquivo = fopen("senha.bin", "rb+");
+  FILE *arquivo = fopen("senha.bin", "wb+");
   if (arquivo != NULL) {
     fwrite(senha, sizeof(char), strlen(senha) + 1, arquivo);
     fclose(arquivo);
-    printf("Senha salva com sucesso!\n");
+    printf("\nSenha salva com sucesso!\n");
   } else {
-    printf("Erro ao salvar a senha.\n");
+    printf("\nErro ao salvar a senha.\n");
   }
 }
 
@@ -32,20 +32,20 @@ void atualizarSenha() {
   lerSenha(senhaCorreta);
 
   // Solicita a senha antiga ao usuário
-  printf("Digite a senha antiga: ");
+  printf("\nDigite a senha antiga: ");
   scanf("%s", senhaAntiga);
 
   // Verificar se a senha antiga está correta
   if (strcmp(senhaAntiga, senhaCorreta) == 0) {
     // Solicita a nova senha ao usuário
-    printf("Digite a nova senha: ");
+    printf("\nDigite a nova senha: ");
     scanf("%s", novaSenha);
 
     // Salva a nova senha no arquivo
     salvarSenha(novaSenha);
 
-    printf("Senha atualizada com sucesso!\n");
+    printf("\nSenha atualizada com sucesso!\n");
   } else {
-    printf("Senha antiga incorreta. Acesso negado.\n");
+    printf("\nSenha antiga incorreta. Acesso negado.\n");
   }
 }

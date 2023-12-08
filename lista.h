@@ -124,7 +124,7 @@ bool buscarData(LISTA* l, int dia, int mes, int ano) {
 bool inserirElemento(LISTA* l, DATA data) {
     PONT novoElemento = (PONT)malloc(sizeof(ELEMENTO));
     if (novoElemento == NULL) {
-        printf("Erro ao alocar memória para o novo elemento.\n");
+        printf("\nErro ao alocar memória para o novo elemento.\n");
         return false;
     }
 
@@ -139,7 +139,7 @@ void salvarEmArquivo(LISTA* l) {
     FILE* arquivo = fopen("index.bin", "wb"); // Abrir o arquivo binário para escrita em modo binário
 
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("\nErro ao abrir o arquivo.\n");
         return;
     }
 
@@ -187,7 +187,7 @@ int particionar(DATA* arrayData, int baixo, int alto) {
 void popularListaDeArquivo(LISTA* l) {
     FILE* arquivo = fopen("index.bin", "rb");
     if (arquivo == NULL) {
-        printf("index.bin não encontrado. Criando um novo arquivo.\n");
+        printf("\nindex.bin não encontrado. Criando um novo arquivo.\n");
         return;
     }
 
@@ -200,20 +200,20 @@ void popularListaDeArquivo(LISTA* l) {
 
 void editarLista(LISTA* l) {
     int dia, mes, ano;
-    printf("Digite a data a ser editada (dia mês ano): ");
+    printf("\nDigite a data a ser editada (dia mês ano): ");
     scanf("%d %d %d", &dia, &mes, &ano);
 
     PONT end = l->inicio;
     while (end != NULL) {
         if (end->reg.DATA.dia == dia && end->reg.DATA.mes == mes && end->reg.DATA.ano == ano) {
-            printf("Digite a nova data (dia mês ano): ");
+            printf("\nDigite a nova data (dia mês ano): ");
             scanf("%d %d %d", &end->reg.DATA.dia, &end->reg.DATA.mes, &end->reg.DATA.ano);
             return;
         }
         end = end->prox;
     }
 
-    printf("Data não encontrada na lista.\n");
+    printf("\nData não encontrada na lista.\n");
 }
 
 void ordenarRapido(DATA* arrayData, int baixo, int alto) {
