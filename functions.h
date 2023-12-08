@@ -7,6 +7,7 @@ nem das funcoes sobre a senha. */
 #include <sys/stat.h>
 
 #define MAX_TAMANHO 200
+
 //define as cores que serao usadas na interface do programa
 #define ANSI_COLOR_BLUE "\x1b[34m"
 #define ANSI_COLOR_RESET "\x1b[0m"

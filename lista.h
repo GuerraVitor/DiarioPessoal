@@ -1,9 +1,15 @@
+/*
+    Neste arquivo, estão localizadas as funções pertinentes a implementação da lista, bem como sua ordenação e administração também.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #define true 1
 #define false 0
 
-//****** Estruturas de dados **********
+/*
+––––––––––––––––––––––––––––––– Estruturas de dados –––––––––––––––––––––––––––––––
+*/
 
 typedef int bool;
 
@@ -29,13 +35,17 @@ typedef struct {
     PONT fim;
 } LISTA;
 
-// ****** implementação das funcoes de Lista
+/*
+    ––––––––––––––––––––––––––––––– Implementação das funçes da Lista –––––––––––––––––––––––––––––––
+*/
 
+// Inicializa a lista
 void inicializarLista(LISTA* l) {
     l->inicio = NULL;
     l->fim = NULL;
 }
 
+// Retorna o tamanho da lista
 int tamanho(LISTA* l) {
     PONT end = l->inicio;
     int tam = 0;
@@ -46,6 +56,7 @@ int tamanho(LISTA* l) {
     return tam; 
 }
 
+// Limpa a lista, liberando a memória dos nós
 void limparLista(LISTA* lista) {
     PONT atual = lista->inicio;
     while (atual != NULL) {
@@ -57,6 +68,7 @@ void limparLista(LISTA* lista) {
     lista->fim = NULL; // Se houver um ponteiro de fim, também o atualiza para indicar uma lista vazia
 }
 
+// Exibe os elementos da lista
 void exibirLista(LISTA* l) {
     PONT atual = l->inicio;
     printf("\nLista de datas:\n");
@@ -69,35 +81,35 @@ void exibirLista(LISTA* l) {
     printf("\n"); 
 }
 
-//remove um elemento especificado por DATA da lista 
+// Remove um elemento especificado por DATA da lista 
 void removerElemento(LISTA *lista, DATA data) {
-  PONT atual = lista->inicio;
-  PONT anterior = NULL;
+    PONT atual = lista->inicio;
+    PONT anterior = NULL;
 
-  while (atual != NULL) {
-    if (atual->reg.DATA.dia == data.dia &&
-        atual->reg.DATA.mes == data.mes &&
-        atual->reg.DATA.ano == data.ano) {
+    while (atual != NULL) {
+        if (atual->reg.DATA.dia == data.dia &&
+            atual->reg.DATA.mes == data.mes &&
+            atual->reg.DATA.ano == data.ano) {
 
-      if (anterior == NULL) {
-        lista->inicio =
-            atual->prox; // O elemento a ser removido é o primeiro da lista
-      } else {
-        anterior->prox = atual->prox; // Elemento a ser removido está no meio ou
-                                      // no final da lista
-      }
+            if (anterior == NULL) {
+                lista->inicio =
+                    atual->prox; // O elemento a ser removido é o primeiro da lista
+            } else {
+                anterior->prox = atual->prox; // Elemento a ser removido está no meio ou no final da lista
+            }
 
-      free(atual); // Libera memória do nó removido
-      return;
+            free(atual); // Libera memória do nó removido
+            return;
+        }
+
+        anterior = atual;
+        atual = atual->prox;
     }
 
-    anterior = atual;
-    atual = atual->prox;
-  }
-
-  printf("\nElemento não encontrado na lista.\n");
+    printf("\nElemento não encontrado na lista.\n");
 }
 
+// Reinicializa a lista, liberando a memória dos nós
 void reinicializarLista(LISTA* l) {
     PONT end = l->inicio;
     while (end != NULL) {
@@ -108,6 +120,7 @@ void reinicializarLista(LISTA* l) {
     l->inicio = NULL;
 }
 
+// Busca uma data na lista
 bool buscarData(LISTA* l, int dia, int mes, int ano) {
     PONT end = l->inicio;
 
@@ -121,6 +134,7 @@ bool buscarData(LISTA* l, int dia, int mes, int ano) {
     return false;
 }
 
+// Insere um elemento no início da lista
 bool inserirElemento(LISTA* l, DATA data) {
     PONT novoElemento = (PONT)malloc(sizeof(ELEMENTO));
     if (novoElemento == NULL) {
@@ -135,6 +149,7 @@ bool inserirElemento(LISTA* l, DATA data) {
     return true;
 }
 
+// Salva os elementos da lista em um arquivo binário
 void salvarEmArquivo(LISTA* l) {
     FILE* arquivo = fopen("index.bin", "wb"); // Abrir o arquivo binário para escrita em modo binário
 
@@ -154,6 +169,7 @@ void salvarEmArquivo(LISTA* l) {
     fclose(arquivo); // Fechar o arquivo após a escrita
 }
 
+// Compara duas datas
 int compararDatas(DATA data1, DATA data2) {
     if (data1.ano < data2.ano || (data1.ano == data2.ano && data1.mes < data2.mes) || (data1.ano == data2.ano && data1.mes == data2.mes && data1.dia < data2.dia)) {
         return -1;
@@ -164,12 +180,14 @@ int compararDatas(DATA data1, DATA data2) {
     }
 }
 
+// Troca duas datas
 void trocarDatas(DATA* data1, DATA* data2) {
     DATA temp = *data1;
     *data1 = *data2;
     *data2 = temp;
 }
 
+// Particiona o array de datas para o algoritmo de ordenação rápida
 int particionar(DATA* arrayData, int baixo, int alto) {
     DATA pivo = arrayData[alto];
     int i = baixo - 1;
@@ -184,6 +202,7 @@ int particionar(DATA* arrayData, int baixo, int alto) {
     return i + 1;
 }
 
+// Popula a lista a partir de um arquivo binário
 void popularListaDeArquivo(LISTA* l) {
     FILE* arquivo = fopen("index.bin", "rb");
     if (arquivo == NULL) {
@@ -198,6 +217,7 @@ void popularListaDeArquivo(LISTA* l) {
     fclose(arquivo);
 }
 
+// Edita um elemento da lista
 void editarLista(LISTA* l) {
     int dia, mes, ano;
     printf("\nDigite a data a ser editada (dia mês ano): ");
@@ -216,6 +236,7 @@ void editarLista(LISTA* l) {
     printf("\nData não encontrada na lista.\n");
 }
 
+// Ordena o array de datas usando o algoritmo de ordenação rápida
 void ordenarRapido(DATA* arrayData, int baixo, int alto) {
     if (baixo < alto) {
         int pivo = particionar(arrayData, baixo, alto);
@@ -224,6 +245,7 @@ void ordenarRapido(DATA* arrayData, int baixo, int alto) {
     }
 }
 
+// Ordena a lista de datas
 void ordenarLista(LISTA* l) {
     int tamanhoLista = tamanho(l);
     if (tamanhoLista > 1) {
